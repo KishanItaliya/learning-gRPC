@@ -1,0 +1,79 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+main
+user-service/main
+order-service/main
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool
+*.out
+
+# Dependency directories
+vendor/
+
+# Go workspace file
+go.work
+
+# Environment variables
+.env
+.env.*
+!.env.example
+*.secret
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Generated protobuf files
+*.pb.go
+*_grpc.pb.go
+user-service/proto/
+order-service/proto/
+
+# Logs
+*.log
+logs/
+
+# Database data (if running locally without Docker)
+*.db
+data/
+
+# Build artifacts
+bin/
+build/
+dist/
+
+# OS specific
+Thumbs.db
+.DS_Store
+
+# Docker volumes (if extracted)
+volumes/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Database dumps
+*.sql
+*.dump
+
+# Backup files
+*.bak
+*.backup
+
+# Coverage reports
+coverage.txt
+coverage.html
+*.coverprofile

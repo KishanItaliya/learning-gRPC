@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+package order;
+
+option go_package = "./proto/order";
+
+// Order Service Definition
+service OrderService {
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+  rpc GetOrder(GetOrderRequest) returns (GetOrderResponse);
+  rpc UpdateOrderStatus(UpdateOrderStatusRequest) returns (UpdateOrderStatusResponse);
+  rpc ListOrders(ListOrdersRequest) returns (ListOrdersResponse);
+  rpc GetUserOrders(GetUserOrdersRequest) returns (GetUserOrdersResponse);
+  rpc CancelOrder(CancelOrderRequest) returns (CancelOrderResponse);
+}
+
+enum OrderStatus {
+  PENDING = 0;
+  PROCESSING = 1;
+  SHIPPED = 2;
+  DELIVERED = 3;
+  CANCELLED = 4;
+}
+
+message OrderItem {
+  int32 id = 1;
+  string product_name = 2;
+  int32 quantity = 3;
+  double price = 4;
+}
+
+message Order {
+  int32 id = 1;
+  int32 user_id = 2;
+  string user_name = 3;
+  string user_email = 4;
+  repeated OrderItem items = 5;
+  double total_amount = 6;
+  OrderStatus status = 7;
+  string created_at = 8;
+  string updated_at = 9;
+}
+
+message CreateOrderRequest {
+  int32 user_id = 1;
+  repeated OrderItem items = 2;
+}
+
+message CreateOrderResponse {
+  Order order = 1;
+  string message = 2;
+}
+
+message GetOrderRequest {
+  int32 id = 1;
+}
+
+message GetOrderResponse {
+  Order order = 1;
+}
+
+message UpdateOrderStatusRequest {
+  int32 id = 1;
+  OrderStatus status = 2;
+}
+
+message UpdateOrderStatusResponse {
+  Order order = 1;
+  string message = 2;
+}
+
+message ListOrdersRequest {
+  int32 page = 1;
+  int32 limit = 2;
+}
+
+message ListOrdersResponse {
+  repeated Order orders = 1;
+  int32 total = 2;
+}
+
+message GetUserOrdersRequest {
+  int32 user_id = 1;
+}
+
+message GetUserOrdersResponse {
+  repeated Order orders = 1;
+  int32 total = 2;
+}
+
+message CancelOrderRequest {
+  int32 id = 1;
+}
+
+message CancelOrderResponse {
+  string message = 1;
+  bool success = 2;
+}
+
