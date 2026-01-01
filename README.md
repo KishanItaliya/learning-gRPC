@@ -33,22 +33,26 @@ UserDB       OrderDB (PostgreSQL)
 ### With Docker (Recommended)
 
 ```bash
-# 1. Generate proto files
-./setup.sh        # Linux/macOS
-setup.bat         # Windows (see WINDOWS-SETUP.md for prerequisites)
-
-# 2. Start all services
+# Start all services (proto generation happens automatically in Docker build)
 docker-compose up --build
 
-# 3. Test
+# Test
 curl http://localhost:3000/health
 ```
 
+**Note:** When using Docker, proto files are automatically generated during the build process. No need to run setup scripts manually.
+
+### Local Development (Without Docker)
+
+```bash
+# 1. Generate proto files locally
+./setup.sh        # Linux/macOS
+setup.bat         # Windows
+
+# 2. Run services manually (see 01-LOCAL-SETUP.md for details)
+```
+
 **Windows Users:** See **[WINDOWS-SETUP.md](WINDOWS-SETUP.md)** for detailed Windows installation guide.
-
-### Manual Setup
-
-See **[01-LOCAL-SETUP.md](01-LOCAL-SETUP.md)** for detailed instructions.
 
 ## 📚 Documentation
 
@@ -63,20 +67,20 @@ See **[01-LOCAL-SETUP.md](01-LOCAL-SETUP.md)** for detailed instructions.
 
 ## 🛠️ Technologies
 
-- **Go** 1.21+ (User & Order Services)
+- **Go** 1.23+ (User & Order Services)
 - **Node.js** 18+ (API Gateway)
-- **gRPC** (Inter-service communication)
-- **Protocol Buffers** (Service definitions)
+- **gRPC** 1.70.0 (Inter-service communication)
+- **Protocol Buffers** 3.0+ (Service definitions)
 - **PostgreSQL** 15+ (Databases)
 - **Docker & Docker Compose** (Containerization)
 
 ## 📋 Prerequisites
 
-- Go 1.21+
+- Go 1.23+
 - Node.js 18+
 - PostgreSQL 15+
-- Protocol Buffers Compiler (`protoc`)
-- Docker & Docker Compose
+- Protocol Buffers Compiler (`protoc`) 3.0+
+- Docker & Docker Compose (for containerized deployment)
 
 ## 🧪 Testing
 
@@ -223,10 +227,20 @@ curl http://localhost:3000/health
 # Install protoc
 brew install protobuf                    # macOS
 sudo apt-get install protobuf-compiler   # Linux
+# Windows: Download from https://github.com/protocolbuffers/protobuf/releases
 
-# Install Go tools
-go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+# Install Go tools (pinned versions for compatibility)
+go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.34.2
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.5.1
+```
+
+### Docker build fails with Go version errors
+```bash
+# The project uses Go 1.23 and gRPC 1.70.0
+# Ensure your go.mod files have:
+# - go 1.23
+# - google.golang.org/grpc v1.70.0
+# - google.golang.org/protobuf v1.36.0
 ```
 
 ### Database connection fails
@@ -286,11 +300,12 @@ ORDER_SERVICE_URL=localhost:50052
 - ✅ REST API Gateway pattern
 - ✅ Database per service
 - ✅ Self-contained proto definitions
-- ✅ Docker containerization
+- ✅ Docker containerization with multi-stage builds
 - ✅ AWS deployment ready
 - ✅ Production-ready error handling
 - ✅ Health checks
 - ✅ Graceful shutdown
+- ✅ Version-pinned dependencies for stability
 
 ## 📖 Learn More
 
