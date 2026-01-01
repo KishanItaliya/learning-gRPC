@@ -3,8 +3,8 @@ const protoLoader = require('@grpc/proto-loader');
 const path = require('path');
 
 // Load proto files
-const USER_PROTO_PATH = path.join(__dirname, '../proto/user.proto');
-const ORDER_PROTO_PATH = path.join(__dirname, '../proto/order.proto');
+const USER_PROTO_PATH = path.join(__dirname, 'proto/user.proto');
+const ORDER_PROTO_PATH = path.join(__dirname, 'proto/order.proto');
 
 const packageDefinition = protoLoader.loadSync(
   [USER_PROTO_PATH, ORDER_PROTO_PATH],

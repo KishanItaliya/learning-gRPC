@@ -40,8 +40,8 @@ services:
   # User Service
   user-service:
     build:
-      context: ./user-service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./user-service/Dockerfile
     container_name: user-service
     environment:
       DB_HOST: userdb
@@ -60,8 +60,8 @@ services:
   # Order Service
   order-service:
     build:
-      context: ./order-service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./order-service/Dockerfile
     container_name: order-service
     environment:
       DB_HOST: orderdb
@@ -83,8 +83,8 @@ services:
   # API Gateway (Node.js/Express)
   api-gateway:
     build:
-      context: ./api-gateway
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./api-gateway/Dockerfile
     container_name: api-gateway
     environment:
       PORT: 3000
