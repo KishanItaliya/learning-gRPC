@@ -1,0 +1,203 @@
+# ==========================================
+# DOCKER-COMPOSE COMMANDS
+# ==========================================
+
+# Start all services
+docker-compose up
+
+# Start all services in detached mode (background)
+docker-compose up -d
+
+# Start with rebuilding images
+docker-compose up --build
+
+# Start specific service only
+docker-compose up user-service
+docker-compose up order-service
+docker-compose up api-gateway
+
+# Stop all services
+docker-compose down
+
+# Stop and remove volumes (deletes database data!)
+docker-compose down -v
+
+# Stop all services
+docker-compose stop
+
+# Start stopped services
+docker-compose start
+
+# Restart all services
+docker-compose restart
+
+# Restart specific service
+docker-compose restart user-service
+docker-compose restart userdb
+
+# View running containers
+docker-compose ps
+
+# View logs
+docker-compose logs
+
+# View logs for specific service
+docker-compose logs user-service
+docker-compose logs order-service
+docker-compose logs api-gateway
+
+# Follow logs (live tail)
+docker-compose logs -f
+
+# Follow logs for specific service
+docker-compose logs -f user-service
+
+# View last 50 lines of logs
+docker-compose logs --tail=50
+
+# Build or rebuild services
+docker-compose build
+
+# Build specific service
+docker-compose build user-service
+
+# Remove stopped containers
+docker-compose rm
+
+# Execute command in running container
+docker-compose exec user-service sh
+docker-compose exec userdb sh
+
+# Scale a service (run multiple instances)
+docker-compose up --scale user-service=3
+
+# Validate docker-compose.yml
+docker-compose config
+
+# List images used by services
+docker-compose images
+
+# ==========================================
+# DATABASE COMMANDS (PostgreSQL)
+# ==========================================
+
+# Connect to userdb (PORT 5434)
+docker exec -it userdb psql -U postgres -d userdb
+
+# Once connected, you can run SQL commands:
+\dt                    # List all tables
+\d users              # Describe users table
+SELECT * FROM users;  # View all users
+\q                    # Quit
+
+# Connect to orderdb (PORT 5433)
+docker exec -it orderdb psql -U postgres -d orderdb
+
+# SQL commands:
+\dt                      # List all tables
+\d orders               # Describe orders table
+\d order_items          # Describe order_items table
+SELECT * FROM orders;   # View all orders
+\q                      # Quit
+
+# Quick one-liner queries
+docker exec userdb psql -U postgres -d userdb -c "SELECT * FROM users;"
+docker exec orderdb psql -U postgres -d orderdb -c "SELECT * FROM orders;"
+
+# Count records
+docker exec userdb psql -U postgres -d userdb -c "SELECT COUNT(*) FROM users;"
+docker exec orderdb psql -U postgres -d orderdb -c "SELECT COUNT(*) FROM orders;"
+
+# ==========================================
+# DATABASE CONNECTION DETAILS (pgAdmin)
+# ==========================================
+
+# UserDB:
+# Host: 127.0.0.1
+# Port: 5434
+# Database: userdb
+# Username: postgres
+# Password: postgres
+
+# OrderDB:
+# Host: 127.0.0.1
+# Port: 5433
+# Database: orderdb
+# Username: postgres
+# Password: postgres
+
+# ==========================================
+# TROUBLESHOOTING COMMANDS
+# ==========================================
+
+# Check if containers are running
+docker ps
+
+# Check all containers (including stopped)
+docker ps -a
+
+# View container resource usage
+docker stats
+
+# Inspect a container
+docker inspect userdb
+
+# View container IP address
+docker inspect userdb -f "{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}"
+
+# Check port mappings
+docker port userdb
+docker port orderdb
+
+# Remove all stopped containers
+docker container prune
+
+# Remove all unused images
+docker image prune
+
+# Remove all unused volumes
+docker volume prune
+
+# Clean everything (careful!)
+docker system prune -a
+
+# Check Docker disk usage
+docker system df
+
+# ==========================================
+# SERVICE HEALTH CHECKS
+# ==========================================
+
+# Check if databases are ready
+docker exec userdb pg_isready -U postgres
+docker exec orderdb pg_isready -U postgres
+
+# Test API Gateway
+curl http://localhost:3000/health
+
+# Test user service (through API Gateway)
+curl http://localhost:3000/users
+
+# Test order service (through API Gateway)
+curl http://localhost:3000/orders
+
+# ==========================================
+# DEVELOPMENT WORKFLOW
+# ==========================================
+
+# 1. Start services
+docker-compose up -d
+
+# 2. View logs
+docker-compose logs -f
+
+# 3. Make code changes (services auto-restart if volumes mounted)
+
+# 4. Rebuild after Dockerfile changes
+docker-compose up --build -d
+
+# 5. Stop services when done
+docker-compose down
+
+# 6. Clean up everything (including volumes)
+docker-compose down -v
